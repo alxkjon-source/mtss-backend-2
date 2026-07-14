@@ -748,6 +748,9 @@ select.fc{appearance:none;cursor:pointer;
   .phdr-r .btn{font-size:12px;padding:7px 12px}
   .dt th{font-size:9.5px;padding:8px 9px}
   .dt td{padding:7px 9px;font-size:12px}
+  #cand-entry-table th,#cand-entry-table td{padding-left:6px!important;padding-right:6px!important}
+  #cand-entry-table th:nth-child(3),#cand-entry-table td:nth-child(3){width:150px!important}
+  #cand-entry-table th:nth-child(5),#cand-entry-table td:nth-child(5){width:105px!important}
   #unhdr{display:none}
   #bc{display:none}
   .modal{max-width:560px}
@@ -814,6 +817,20 @@ select.fc{appearance:none;cursor:pointer;
   /* Table */
   .dt th{font-size:9px;padding:7px 8px;letter-spacing:.2px}
   .dt td{padding:7px 8px;font-size:11.5px;line-height:1.3}
+  #cand-entry-table th,#cand-entry-table td{padding-left:5px!important;padding-right:5px!important}
+  #cand-entry-table th:nth-child(1),#cand-entry-table td:nth-child(1){width:26px!important}
+  #cand-entry-table th:nth-child(3),#cand-entry-table td:nth-child(3){width:128px!important}
+  #cand-entry-table th:nth-child(4),#cand-entry-table td:nth-child(4){width:56px!important}
+  #cand-entry-table th:nth-child(5),#cand-entry-table td:nth-child(5){width:92px!important}
+  #cand-entry-table th:nth-child(6),#cand-entry-table td:nth-child(6){width:92px!important}
+  #cand-entry-table th:nth-child(7),#cand-entry-table td:nth-child(7){width:96px!important}
+  #cand-entry-table th:nth-child(8),#cand-entry-table td:nth-child(8){width:82px!important}
+  #cand-entry-table th:nth-child(9),#cand-entry-table td:nth-child(9){width:76px!important}
+  #cand-entry-table th:nth-child(10),#cand-entry-table td:nth-child(10){width:86px!important}
+  #cand-entry-table th:nth-child(11),#cand-entry-table td:nth-child(11){width:92px!important}
+  #cand-entry-table th:nth-child(12),#cand-entry-table td:nth-child(12){width:110px!important}
+  #cand-entry-table th:nth-child(13),#cand-entry-table td:nth-child(13){width:42px!important}
+  #cand-entry-table input,#cand-entry-table select{font-size:12px!important;padding:6px 7px!important;min-height:36px!important}
 
   /* Buttons */
   .btn{font-size:12.5px;min-height:40px}
@@ -1527,6 +1544,7 @@ select.fc{appearance:none;cursor:pointer;
       <div class="fg"><label>Sunday School <span class="req">*</span></label><select class="fc" id="cd-sch" disabled onchange="onSS('cd')"><option value="">— School —</option></select></div>
       <div class="fg"><label>School Code</label><input class="fc auto" id="cd-sc" readonly></div>
       <div class="fg"><label>Exam Centre (FOR_SLIPS)</label><input class="fc auto" id="cd-ec" readonly></div>
+      <div class="fg" id="cd-qec-wrap" style="display:none"><label>QIP Exam Centre</label><select class="fc" id="cd-qec"><option value="">— Select QIP Exam Centre —</option></select></div>
 
 
       <!-- SECTION 2: Class & Exam Details "— FIRST for batch workflow -->
@@ -1786,6 +1804,7 @@ select.fc{appearance:none;cursor:pointer;
     <div class="tab active" onclick="stab('dio',this)"><i class="fa-solid fa-building-columns"></i> Dioceses (<span id="tcd">0</span>)</div>
     <div class="tab" onclick="stab('dist',this)"><i class="fa-solid fa-map-pin"></i> Districts (<span id="tcdist">0</span>)</div>
     <div class="tab" onclick="stab('ec',this)"><i class="fa-solid fa-building"></i> Exam Centers (<span id="tcec">0</span>)</div>
+    <div class="tab" onclick="stab('qec',this)"><i class="fa-solid fa-graduation-cap"></i> QIP Exam Centres (<span id="tcqec">0</span>)</div>
     <div class="tab" onclick="stab('cen',this)"><i class="fa-solid fa-map-marker-alt"></i> Centers (<span id="tcc">0</span>)</div>
     <div class="tab" onclick="stab('sch',this)"><i class="fa-solid fa-church"></i> Schools (<span id="tcs">0</span>)</div>
   </div>
@@ -2071,6 +2090,7 @@ select.fc{appearance:none;cursor:pointer;
     <div class="tab" onclick="selReport('annual',this)"><i class="fa-solid fa-scroll"></i> Annual Exam</div>
     <div class="tab" onclick="selReport('result',this)"><i class="fa-solid fa-award"></i> Result</div>
     <div class="tab perm-guest-hide" onclick="selReport('slipid',this)"><i class="fa-solid fa-id-badge"></i> SLIP &amp; ID</div>
+    <div class="tab" onclick="selReport('qip',this)"><i class="fa-solid fa-graduation-cap"></i> QIP</div>
   </div>
   <div class="card">
     <div class="ch"><div class="chi"><i class="fa-solid fa-filter"></i></div><h2>Filters</h2></div>
@@ -2083,6 +2103,7 @@ select.fc{appearance:none;cursor:pointer;
         <div class="fg" id="rpt-ec-row"><label>Exam Center <small style="text-transform:none;font-weight:400;letter-spacing:0">(affects print)</small></label><select class="fc" id="rpt-ec" onchange="generateReport()"><option value="">All Exam Centers</option></select></div>
         <div class="fg"><label>Class</label><select class="fc" id="rpt-cls" onchange="generateReport()"><option value="">All Classes</option></select></div>
         <div class="fg" id="rpt-cat-row"><label>Category</label><select class="fc" id="rpt-cat" onchange="generateReport()"><option value="">All Categories</option></select></div>
+        <div class="fg" id="rpt-qec-row" style="display:none"><label>QIP Exam Centre</label><select class="fc" id="rpt-qec" onchange="generateReport()"><option value="">All QIP Exam Centres</option></select></div>
       </div>
       <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--bdr);display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <button class="btn bp" onclick="generateReport()"><i class="fa-solid fa-magnifying-glass"></i> Generate</button>
@@ -2121,6 +2142,7 @@ select.fc{appearance:none;cursor:pointer;
         <button class="btn binf" id="rpt-print-slips-btn" style="display:none" onclick="printSlipsForCurrentReport()"><i class="fa-solid fa-file-alt"></i> Print Slips</button>
         <button class="btn bwarn" id="rpt-print-idcards-btn" style="display:none" onclick="printIDCardsForCurrentReport()"><i class="fa-solid fa-id-card"></i> Print ID Cards</button>
         <button class="btn bp" id="rpt-print-fmt-btn" onclick="printReport()"><i class="fa-solid fa-print"></i> Print Formatted List</button>
+        <button class="btn bgold" id="rpt-print-lbl-btn" onclick="printAddressLabels()" style="display:none"><i class="fa-solid fa-tags"></i> Print Address Labels (A4, 4×8)</button>
       </div>
     </div>
   </div>
@@ -2332,6 +2354,62 @@ select.fc{appearance:none;cursor:pointer;
   <div class="mf"><button class="btn bs" onclick="closeMod('ec-ov')">Cancel</button><button class="btn bp" onclick="saveEC()"><i class="fa-solid fa-floppy-disk"></i> Save</button></div>
 </div></div>
 
+<!-- EMAIL CONFIRM MODAL (before sending OTP) -->
+<div class="ov" id="otp-confirm-ov" style="z-index:10600"><div class="modal" style="max-width:420px">
+  <div class="mh"><h3><i class="fa-solid fa-circle-question"></i> Confirm Vicar's Email</h3><button class="mc" onclick="closeMod('otp-confirm-ov')">×</button></div>
+  <div class="mb">
+    <p style="font-size:13.5px;margin-bottom:14px">Please confirm that the email ID has been corrected in the Address Entry.</p>
+    <div style="background:var(--panel);border-radius:8px;padding:12px 14px;font-weight:700;text-align:center;font-size:14px;word-break:break-all" id="otp-confirm-email"></div>
+  </div>
+  <div class="mf">
+    <button class="btn bs" id="otp-confirm-no-btn"><i class="fa-solid fa-pen"></i> No, let me fix it</button>
+    <button class="btn bp" id="otp-confirm-yes-btn"><i class="fa-solid fa-check"></i> Yes, send code</button>
+  </div>
+</div></div>
+
+<!-- OTP VERIFY MODAL -->
+<div class="ov" id="otp-ov" style="z-index:10600"><div class="modal" style="max-width:420px">
+  <div class="mh"><h3><i class="fa-solid fa-shield-halved"></i> Vicar Verification</h3><button class="mc" onclick="closeMod('otp-ov');_otpPending=null">×</button></div>
+  <div class="mb">
+    <p style="font-size:13px;color:var(--mut);margin-bottom:12px">
+      A 6-digit code has been emailed to the Vicar at <b id="otp-target-email"></b>.
+      Enter it below to submit these candidate entries.
+    </p>
+    <div class="fg"><label>6-digit Code</label>
+      <input class="fc" id="otp-code-input" maxlength="6" inputmode="numeric" placeholder="••••••"
+        style="font-family:monospace;font-size:22px;letter-spacing:8px;text-align:center;font-weight:800"
+        onkeydown="if(event.key==='Enter')_otpVerify()">
+    </div>
+    <div id="otp-status" style="display:none"></div>
+  </div>
+  <div class="mf">
+    <button class="btn bs" id="otp-resend-btn" onclick="_otpSend()">Resend Code</button>
+    <button class="btn bp" id="otp-verify-btn" onclick="_otpVerify()"><i class="fa-solid fa-check"></i> Verify &amp; Submit</button>
+  </div>
+</div></div>
+
+<!-- QIP EXAM CENTRE MODAL -->
+<div class="ov" id="qec-ov"><div class="modal" style="max-width:480px">
+  <div class="mh"><h3><i class="fa-solid fa-graduation-cap"></i> Add QIP Exam Centre</h3><button class="mc" onclick="closeMod('qec-ov')">×</button></div>
+  <div class="mb"><div class="fg3" style="gap:13px">
+    <div class="fg" style="grid-column:span 2"><label>QIP Exam Centre Name <span class="req">*</span></label><input class="fc" id="qecm-nm" placeholder="e.g. Adoor QIP Centre"></div>
+    <div class="fg"><label>Code</label><input class="fc" id="qecm-cd" placeholder="e.g. QIP-AD1" style="text-transform:uppercase"></div>
+  </div>
+  <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bdr)">
+    <p style="font-size:11.5px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">
+      <i class="fa-solid fa-user-tie"></i> Exam Chief
+    </p>
+    <div class="fg3" style="gap:13px">
+      <div class="fg" style="grid-column:span 2"><label>Name</label><input class="fc" id="qecm-chief-nm" placeholder="e.g. Rev. Dr. Mathew K. Muthalaly"></div>
+      <div class="fg"><label>Designation</label><input class="fc" id="qecm-chief-desig" placeholder="e.g. Vicar"></div>
+      <div class="fg" style="grid-column:span 3"><label>Address</label><input class="fc" id="qecm-chief-addr" placeholder="Church, street, city, state"></div>
+      <div class="fg"><label>Mobile</label><input class="fc" id="qecm-chief-mob" placeholder="10-digit mobile"></div>
+    </div>
+  </div>
+  </div>
+  <div class="mf"><button class="btn bs" onclick="closeMod('qec-ov')">Cancel</button><button class="btn bp" onclick="saveQEC()"><i class="fa-solid fa-floppy-disk"></i> Save</button></div>
+</div></div>
+
 <!-- DISTRICT MODAL -->
 <div class="ov" id="dist-ov"><div class="modal" style="max-width:440px">
   <div class="mh"><h3><i class="fa-solid fa-map-pin"></i> Add District</h3><button class="mc" onclick="closeMod('dist-ov')">×</button></div>
@@ -2394,8 +2472,9 @@ const CLASSES=[
   {id:'CLS14',l:'Class XII',r:'XII',mn:17,mx:18,up:'CLSSR',ex:true},
   {id:'CLSSR',l:'Senior',r:'SR',mn:18,mx:30,up:'CLSBR',ex:true},
   {id:'CLSBR',l:'Birudh',r:'BR',mn:18,mx:50,up:null,ex:true},
+  {id:'CLSQIP',l:'QIP',r:'QIP',mn:5,mx:99,up:null,ex:false},
 ];
-const CATS=[{c:'STU',n:'Student'},{c:'TEA',n:'Teacher'}];
+const CATS=[{c:'STU',n:'Student'},{c:'TEA',n:'Teacher'},{c:'QIPT',n:'QIP Teacher'}];
 // ── Result / Mark Entry ──────────────────────────────────────────
 // Category-specific pass mark: Student default 75, Teacher default 50 — each editable independently
 const _PASS_MARK_DEFAULT={STU:75,TEA:50};
@@ -2992,6 +3071,7 @@ const lsL=k=>lsG(k)||[];
 function dbS(path,id,obj){const l=lsL(path).filter(x=>x.id!==id);l.push(obj);lsS(path,l);_fbPush(path,id,obj);if(STATE.fsdb)STATE.fsdb.collection(path).doc(id).set(obj).catch(e=>console.warn('Firestore set',e));if(BACKEND)BACKEND.set(path,id,obj);_sbPush(path,id,obj);_myPush(path,id,obj);}
 function dbD(path,id){lsS(path,lsL(path).filter(x=>x.id!==id));if(STATE.fdb)STATE.fdb.ref((FB_TABLE_MAP[path]||path)+'/'+id).remove().catch(e=>console.warn('Firebase delete failed:',e));if(STATE.fsdb)STATE.fsdb.collection(path).doc(id).delete().catch(e=>console.warn('Firestore delete',e));if(BACKEND)BACKEND.del(path,id);_myDelete(path,id);_sbDelete(path,id);}
 // ==================== EXAM CENTER DATA LAYER ====================
+function getQECs(){return lsL('mt_qec')}
 function getExamCenters(){
   let l=lsL('mt_ec');
   let changed=false;
@@ -3010,6 +3090,34 @@ function removeAllEC(){
   toast('All exam centers deleted','warn');renderSTabs();
 }
 function delEC(id){if(!confirm('Delete this exam center?'))return;dbD('mt_ec',id);toast('Exam center deleted','warn');renderSTabs()}
+// ---- QIP EXAM CENTRE CRUD ----
+function showQECMod(id=null){
+  STATE.editQEC=id;
+  const e=id?getQECs().find(x=>x.id===id):null;
+  document.getElementById('qecm-nm').value=e?.name||'';
+  document.getElementById('qecm-cd').value=e?.code||'';
+  document.getElementById('qecm-chief-nm').value=e?.chiefNm||'';
+  document.getElementById('qecm-chief-desig').value=e?.chiefDesig||'';
+  document.getElementById('qecm-chief-addr').value=e?.chiefAddr||'';
+  document.getElementById('qecm-chief-mob').value=e?.chiefMob||'';
+  document.querySelector('#qec-ov .mh h3').innerHTML='<i class="fa-solid fa-graduation-cap"></i> '+(id?'Edit':'Add')+' QIP Exam Centre';
+  openMod('qec-ov');
+}
+function saveQEC(){
+  const nm=document.getElementById('qecm-nm').value.trim();
+  if(!nm){toast('QIP Exam Centre name is required','warn');return}
+  const code=(document.getElementById('qecm-cd').value||'').trim().toUpperCase();
+  const id=STATE.editQEC||('QEC_'+(code||Date.now()));
+  const ne={id,name:nm,code,
+    chiefNm:document.getElementById('qecm-chief-nm').value.trim(),
+    chiefDesig:document.getElementById('qecm-chief-desig').value.trim(),
+    chiefAddr:document.getElementById('qecm-chief-addr').value.trim(),
+    chiefMob:document.getElementById('qecm-chief-mob').value.trim()};
+  dbS('mt_qec',ne.id,ne);
+  closeMod('qec-ov');toast(STATE.editQEC?'QIP Exam Centre updated!':'QIP Exam Centre added!','ok');
+  STATE.editQEC=null;renderSTabs();
+}
+function delQEC(id){if(!confirm('Delete this QIP exam centre?'))return;dbD('mt_qec',id);toast('QIP exam centre deleted','warn');renderSTabs()}
 
 /** Expand/collapse an exam center row inline in the table */
 function toggleECRow(ecId,btn){
@@ -3305,15 +3413,15 @@ function saveDist(){
 
 function getCens(){
   // Fall back to seed data ONLY on fresh install (key never written)
-  if(localStorage.getItem('mt_cen')===null)return SC;
+  if(localStorage.getItem('mt_cen')===null)return[];
   return lsL('mt_cen');
 }
 function getSchs(){
-  if(localStorage.getItem('mt_sch')===null)return SS;
+  if(localStorage.getItem('mt_sch')===null)return[];
   return lsL('mt_sch');
 }
 function getDios(){
-  if(localStorage.getItem('mt_dio')===null)return[...DIOCESES];
+  if(localStorage.getItem('mt_dio')===null)return[];
   return lsL('mt_dio');
 }
 
@@ -3522,9 +3630,8 @@ function _loginThrottleClear(email){
   lsS('mt_login_attempts',all);
 }
 const DEMO_USERS=[
+  // Only the first-login admin — all other users come from the database.
   {id:'U_ADM',name:'Administrator',email:'admin@marthoma.org',ph:hash('Admin@123'),role:'admin',schId:'',perm:'read_edit',active:true},
-  {id:'U_LOC',name:'Local Data User',email:'user@marthoma.org',ph:hash('User@123'),role:'local_user',schId:'',perm:'read_edit',active:true},
-  {id:'U_SCH',name:'School User — Adoor',email:'school@marthoma.org',ph:hash('School@123'),role:'school_user',schId:'S_AD0101',perm:'read_edit',active:true},
 ];
 function getUsers(){let u=lsL('mt_users');if(!u.length){u=DEMO_USERS;lsS('mt_users',u)}return u}
 
@@ -4174,6 +4281,10 @@ const CAT_DEF={
        desc:'Teacher candidate. Register No is always required.',
        typ:'Teacher',pres:'N/A',cert:'Yes',fee:'No',cnd:'Yes',bir:'Yes',cx:'No',
        rules:['Category: Teacher','Register No is permanently required','Birudh Qualified defaults to Yes']},
+  QIPT:{label:'QIP Teacher',icon:'fa-user-graduate',color:'#6A1B9A',bg:'#F3E5F5',bdr:'#CE93D8',
+       desc:'QIP Teacher candidate. Register No is always required, from the QIP sequence (1001\u20135000).',
+       typ:'QIP Teacher',pres:'N/A',cert:'Yes',fee:'No',cnd:'Yes',bir:'No',cx:'No',
+       rules:['Category: QIP Teacher','Register No is permanently required','Uses the QIP Register No sequence (1001\u20135000, resets yearly)']},
 };
 
 function genRegNo(catCode,year){
@@ -4188,18 +4299,32 @@ function genRegNo(catCode,year){
   if(nextNum>99999){toast('RegNo limit 99999 reached for this category','warn');return''}
   return String(nextNum).padStart(5,'0'); // "10001","10002"...
 }
+/** QIP has its own separate Register No sequence — 1001 to 5000, resetting fresh
+ *  every exam year, completely independent of the Student/Teacher (Birudh) sequence
+ *  above. Shared by the QIP class and the QIP Teacher (QIPT) category. */
+function genQipRegNo(year){
+  const all=lsL('mt_cand');
+  const existing=all.filter(c=>
+    (c.clsId==='CLSQIP'||c.cat==='QIPT') && String(c.yr)===String(year) && c.id!==STATE.editCand && c.regNo
+  );
+  const nextNum=1001+existing.length;
+  if(nextNum>5000){toast('QIP RegNo limit 5000 reached for this exam year','warn');return''}
+  return String(nextNum).padStart(4,'0'); // "1001","1002"...
+}
 
 function isRegNoRequired(){
   const cat=document.getElementById('cd-cat')?.value;
   const bir=document.getElementById('cd-bq')?.value;
-  return cat==='TEA'||bir==='Yes';
+  const cls=document.getElementById('cd-cl')?.value;
+  return cat==='TEA'||cat==='QIPT'||bir==='Yes'||cls==='CLSQIP';
 }
 function updateRegNoRequirement(){
   const cat=document.getElementById('cd-cat')?.value;
   const bir=document.getElementById('cd-bq')?.value;
+  const cls=document.getElementById('cd-cl')?.value;
   const rn=document.getElementById('cd-rn');
   const rule=document.getElementById('cd-rn-rule');
-  const required=cat==='TEA'||bir==='Yes';
+  const required=cat==='TEA'||cat==='QIPT'||bir==='Yes'||cls==='CLSQIP';
   if(cat==='TEA'){
     const bq=document.getElementById('cd-bq');if(bq)bq.value='Yes';
   }
@@ -4222,11 +4347,13 @@ function updateRegNoRequirement(){
   if(rule){
     rule.textContent=locked
       ?'🔒 Fixed for '+(existing.yr||'this exam year')+' — already generated, cannot change'
-      :cat==='TEA'
-        ?'● Required for teachers'
-        :bir==='Yes'
-          ?'● Required when Birudh Qualified = Yes'
-          :'● Not applicable unless Birudh Qualified = Yes';
+      :(cls==='CLSQIP'||cat==='QIPT')
+        ?'● Required for QIP (own Register No sequence, 1001–5000)'
+        :cat==='TEA'
+          ?'● Required for teachers'
+          :bir==='Yes'
+            ?'● Required when Birudh Qualified = Yes'
+            :'● Not applicable unless Birudh Qualified = Yes';
     rule.style.color=locked?'var(--ok)':(required?'var(--err)':'var(--ok)');
   }
 }
@@ -4248,6 +4375,19 @@ function autoFillCat(){
   const d=CAT_DEF[cat];if(!d)return;
   if(cat==='TEA')_setEl('cd-bq','Yes');
   updateRegNoRequirement();
+  // QIP Exam Centre selector — visible only for QIP class / QIP Teacher category
+  const qecWrap=document.getElementById('cd-qec-wrap');
+  if(qecWrap){
+    const clsNow=document.getElementById('cd-cl')?.value;
+    const isQipNow=(clsNow==='CLSQIP'||cat==='QIPT');
+    qecWrap.style.display=isQipNow?'':'none';
+    if(isQipNow){
+      const qs=document.getElementById('cd-qec');
+      const cur=qs.value;
+      qs.innerHTML='<option value="">— Select QIP Exam Centre —</option>'+getQECs().sort((a,b)=>a.name.localeCompare(b.name)).map(x=>'<option value="'+x.id+'">'+escHtml(x.name)+'</option>').join('');
+      if(cur)qs.value=cur;
+    }
+  }
   // Auto-fill RegNo: on new entries always; on edits only if this candidate doesn't
   // already have one locked in for their exam year (see updateRegNoRequirement).
   // Re-read clsId after rebuildClsDrop may have updated the dropdown selection
@@ -4257,7 +4397,7 @@ function autoFillCat(){
   const yearForGen=existingRec?existingRec.yr:year;
   if(schCode&&clsIdNow&&yearForGen&&!alreadyLocked&&isRegNoRequired()){
     const rn=document.getElementById('cd-rn');
-    if(rn&&!rn.value){rn.value=genRegNo(cat,yearForGen);rn.classList.add('ok')}
+    if(rn&&!rn.value){rn.value=(clsIdNow==='CLSQIP'||cat==='QIPT')?genQipRegNo(yearForGen):genRegNo(cat,yearForGen);rn.classList.add('ok')}
     // Also auto-fill Admission Number if empty
     const rl=document.getElementById('cd-rl');
     if(rl&&!rl.value){rl.value=genAdmNo(schCode,yearForGen);rl.classList.add('ok')}
@@ -4957,6 +5097,13 @@ function nextRegNoForBatch(catCode,year,offset){
   const existing=lsL('mt_cand').filter(c=>c.cat===catCode&&String(c.yr)===String(year)&&c.id!==STATE.editCand&&c.regNo).length;
   return String(10001+existing+offset).padStart(5,'0');
 }
+function nextQipRegNoForBatch(year,offset){
+  // QIP's own 1001–5000 sequence, per exam year — shared by QIP class + QIPT category
+  const existing=lsL('mt_cand').filter(c=>(c.clsId==='CLSQIP'||c.cat==='QIPT')&&String(c.yr)===String(year)&&c.id!==STATE.editCand&&c.regNo).length;
+  const n=1001+existing+offset;
+  if(n>5000){toast('QIP RegNo limit 5000 reached for this exam year','warn');return''}
+  return String(n).padStart(4,'0');
+}
 function nextAdmNoForBatch(schCode,year,offset){
   const existing=lsL('mt_cand').filter(c=>c.schCode===schCode&&String(c.yr)===String(year)&&c.id!==STATE.editCand&&c.admNo).length;
   return String(existing+1+offset).padStart(3,'0');
@@ -5008,18 +5155,87 @@ function saveCandidateGrid(){
         '<br><span style="font-size:11px;color:var(--mut)">Existing RegNo: <code style="font-weight:800;color:var(--pri)">'+escHtml(d.dup.regNo||'—')+'</code></span>'+
       '</div>';}).join('')+
       '</div><p style="margin-top:12px;font-size:12px;color:var(--mut)">Do you want to proceed and save anyway?</p>';
-    showDupModal(dupHtml,function(){_doCandGridSave(rows,s,c,d,cls,cat,sId,cId,dId,yr);});
+    showDupModal(dupHtml,function(){_otpGate(sId,function(){_doCandGridSave(rows,s,c,d,cls,cat,sId,cId,dId,yr);});});
     return;
   }
-  _doCandGridSave(rows,s,c,d,cls,cat,sId,cId,dId,yr);
+  _otpGate(sId,function(){_doCandGridSave(rows,s,c,d,cls,cat,sId,cId,dId,yr);});
+}
+// ==================== OTP VERIFY & SUBMIT ====================
+// Before candidate entries save, a 6-digit code is emailed to the school's
+// Vicar (the CLERGY address record for that school). Entry saves only after
+// the correct code is typed in. Admin accounts skip this step.
+var _otpPending=null; // {email, onSuccess}
+function _otpGate(sId,onSuccess){
+  if(STATE.user?.role==='admin'){onSuccess();return}
+  if(!STATE.mysqlBackup){toast('Database not connected — cannot send verification code','err');return}
+  const vicar=lsL('mt_hm').find(function(h){return h.schId===sId&&h.desig==='CLERGY'&&h.email});
+  const email=vicar?vicar.email:'';
+  if(!email){
+    toast('No Vicar email found for this school. Add the Vicar (Clergy) record with an email in Address Records first.','err');
+    return;
+  }
+  document.getElementById('otp-confirm-email').textContent=email;
+  document.getElementById('otp-confirm-yes-btn').onclick=function(){closeMod('otp-confirm-ov');_otpStart(email,onSuccess);};
+  document.getElementById('otp-confirm-no-btn').onclick=function(){closeMod('otp-confirm-ov');nav('hm');toast('Update the Vicar\u2019s email in Address Records, then come back and save again.','warn');};
+  openMod('otp-confirm-ov');
+}
+function _otpStart(email,onSuccess){
+  _otpPending={email:email,onSuccess:onSuccess};
+  document.getElementById('otp-target-email').textContent=email.replace(/(.{2}).+(@.+)/,'$1•••$2');
+  document.getElementById('otp-code-input').value='';
+  document.getElementById('otp-status').style.display='none';
+  document.getElementById('otp-verify-btn').disabled=false;
+  openMod('otp-ov');
+  _otpSend();
+}
+function _otpSend(){
+  if(!_otpPending)return;
+  const btn=document.getElementById('otp-resend-btn');
+  if(btn){btn.disabled=true;btn.textContent='Sending…';}
+  fetch(STATE.mysqlBackup.url.replace(/api\.php$/,'otp.php')+'?action=send',{
+    method:'POST',headers:{'Content-Type':'application/json','X-API-Key':STATE.mysqlBackup.key},
+    body:JSON.stringify({email:_otpPending.email,context:'Candidate entry \u2014 '+(STATE.user?.name||STATE.user?.email||'')})
+  }).then(r=>r.json()).then(function(res){
+    if(btn){btn.disabled=false;btn.textContent='Resend Code';}
+    if(res&&res.ok)_otpStatus('Code sent to the Vicar\u2019s email. Ask them for the 6-digit code.','ok');
+    else _otpStatus(res&&res.error?res.error:'Could not send the code','err');
+  }).catch(function(e){
+    if(btn){btn.disabled=false;btn.textContent='Resend Code';}
+    _otpStatus('Could not reach the server: '+e.message,'err');
+  });
+}
+function _otpVerify(){
+  if(!_otpPending)return;
+  const code=(document.getElementById('otp-code-input').value||'').trim();
+  if(!/^\d{6}$/.test(code)){_otpStatus('Enter the 6-digit code','warn');return}
+  const btn=document.getElementById('otp-verify-btn');btn.disabled=true;
+  fetch(STATE.mysqlBackup.url.replace(/api\.php$/,'otp.php')+'?action=verify',{
+    method:'POST',headers:{'Content-Type':'application/json','X-API-Key':STATE.mysqlBackup.key},
+    body:JSON.stringify({email:_otpPending.email,code:code})
+  }).then(r=>r.json()).then(function(res){
+    btn.disabled=false;
+    if(res&&res.verified){
+      closeMod('otp-ov');
+      const cb=_otpPending.onSuccess;_otpPending=null;
+      toast('Verified \u2713','ok');
+      cb();
+    }else _otpStatus(res&&res.error?res.error:'Incorrect code','err');
+  }).catch(function(e){btn.disabled=false;_otpStatus('Could not reach the server: '+e.message,'err');});
+}
+function _otpStatus(msg,type){
+  const el=document.getElementById('otp-status');if(!el)return;
+  const col={ok:'var(--ok)',err:'var(--err)',warn:'var(--warn)'};
+  el.style.cssText='display:block;margin-top:10px;font-size:12.5px;font-weight:600;color:'+col[type];
+  el.textContent=msg;
 }
 function _doCandGridSave(rows,s,c,d,cls,cat,sId,cId,dId,yr){
   var clsId=cls?.id||'';
-  var regOffset=0,admOffset=0;
+  var regOffset=0,admOffset=0,qipOffset=0;
+  const isQip=(clsId==='CLSQIP'||cat==='QIPT');
   rows.forEach(row=>{
     const bir=cat==='TEA'?'Yes':(row.bir||'No');
-    const needsReg=cat==='TEA'||bir==='Yes';
-    const regNo=needsReg?(row.regNo||nextRegNoForBatch(cat,yr,regOffset++)):'';
+    const needsReg=cat==='TEA'||cat==='QIPT'||bir==='Yes'||isQip;
+    const regNo=needsReg?(row.regNo||(isQip?nextQipRegNoForBatch(yr,qipOffset++):nextRegNoForBatch(cat,yr,regOffset++))):'';
     if(needsReg&&!regNo){throw new Error('Register No required')}
     const admNo=row.admNo||nextAdmNoForBatch(s?.code||'',yr,admOffset++);
     const r={id:row.id||gid('CND'),candUID:getOrAssignCandUID(row.id,row.candUID),schId:sId,cenId:cId,dioId:dId,
@@ -5031,6 +5247,8 @@ function _doCandGridSave(rows,s,c,d,cls,cat,sId,cId,dId,yr){
       cand:row.annual||'Yes',cert:'Yes',fee:row.fee||'No',bir,pres:'N/A',cancel:'No',
       regVerified:row.regVerified||false,
       yr,elyr:+g('cd-ey')||yr,notes:row.notes||'',rem:'',
+      qecId:(isQip?(document.getElementById('cd-qec')?.value||''):''),
+      qecNm:(isQip?(getQECs().find(q=>q.id===document.getElementById('cd-qec')?.value)?.name||''):''),
       dt:new Date().toISOString(),by:STATE.user?.email||''};
     dbS('mt_cand',r.id,r);
   });
@@ -5621,6 +5839,27 @@ function dlTpl(type){
 let stabF='dio';
 function stab(t,el){stabF=t;document.querySelectorAll('#page-schools-mgr .tabs .tab').forEach(x=>x.classList.remove('active'));if(el)el.classList.add('active');renderSTabs()}
 function renderSTabs(){
+  // Preserve whatever search/filter field currently has focus — this
+  // function rebuilds the whole table via innerHTML, which would otherwise
+  // wipe out focus and cursor position after every keystroke. Scheduled via
+  // setTimeout so it runs after this function finishes, no matter which
+  // branch/return path below actually executes.
+  const _active=document.activeElement;
+  if(_active&&_active.id&&_active.closest&&_active.closest('#stab-c')){
+    const _activeId=_active.id;
+    const _selStart=_active.selectionStart;
+    const _selEnd=_active.selectionEnd;
+    setTimeout(function(){
+      const el=document.getElementById(_activeId);
+      if(el){
+        el.focus();
+        if(_selStart!=null&&el.setSelectionRange){
+          try{el.setSelectionRange(_selStart,_selEnd);}catch(e){}
+        }
+      }
+    },0);
+  }
+
   const cens=getCens(),schs=getSchs(),dios=getDios(),dists=getDists();
   const {duidMap,cuidMap,suidMap}=computeUIDs(dios,cens,schs);
   // Lazy-persist: if any record is missing a stored UID, write them all now
@@ -5635,6 +5874,7 @@ function renderSTabs(){
   const tdist=document.getElementById('tcdist');if(tdist)tdist.textContent=dists.length;
   document.getElementById('tcc').textContent=cens.length;
   document.getElementById('tcs').textContent=schs.length;
+  const tqec0=document.getElementById('tcqec');if(tqec0)tqec0.textContent=getQECs().length;
   const cont=document.getElementById('stab-c');
 
   if(stabF==='dist'){
@@ -5751,6 +5991,32 @@ function renderSTabs(){
           <div id="ec-exp-body-${ec.id}"></div>
         </td></tr>`;
       }).join(''):'<tr><td colspan="8"><div class="empty"><i class="fa-solid fa-building"></i><h3>No exam centers yet.</h3></div></td></tr>'}
+      </tbody></table></div></div></div>`;
+    return;
+  } else if(stabF==='qec'){
+    const qecs=getQECs();
+    const q=(document.getElementById('qecq')?.value||'').toLowerCase();
+    let fl=qecs;
+    if(q)fl=fl.filter(e=>[e.name,e.code,e.chiefNm].join(' ').toLowerCase().includes(q));
+    const tqecEl=document.getElementById('tcqec');if(tqecEl)tqecEl.textContent=qecs.length;
+    cont.innerHTML=`<div class="card"><div class="cb">
+      <div class="sbar" style="margin-bottom:12px">
+        <div class="sw"><i class="fa-solid fa-search"></i><input class="fc" id="qecq" oninput="renderSTabs()" placeholder="Search QIP exam centre…"></div>
+        <span class="bdg binf2">${fl.length} / ${qecs.length}</span><span style="flex:1"></span>
+        <button class="btn bp bsm" onclick="showQECMod()"><i class="fa-solid fa-plus"></i> Add QIP Exam Centre</button>
+      </div>
+      <div class="tw"><table class="dt"><thead><tr>
+        <th>Sl #</th><th>Code</th><th>QIP Exam Centre Name</th><th>Exam Chief</th><th>Chief Mobile</th><th>Actions</th>
+      </tr></thead><tbody>${fl.length?fl.map((e,i)=>`<tr>
+          <td>${i+1}</td>
+          <td><strong style="font-family:monospace;color:var(--pri)">${escHtml(e.code||'—')}</strong></td>
+          <td><strong>${escHtml(e.name)}</strong></td>
+          <td>${escHtml(e.chiefNm||'—')}${e.chiefDesig?'<br><small style="color:var(--mut)">'+escHtml(e.chiefDesig)+'</small>':''}</td>
+          <td>${escHtml(e.chiefMob||'—')}</td>
+          <td style="white-space:nowrap">
+            <button class="btn binf bsm" onclick="showQECMod('${e.id}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn berr bsm" onclick="delQEC('${e.id}')"><i class="fa-solid fa-trash"></i></button>
+          </td></tr>`).join(''):'<tr><td colspan="6"><div class="empty"><i class="fa-solid fa-graduation-cap"></i><h3>No QIP exam centres yet. Click Add QIP Exam Centre.</h3></div></td></tr>'}
       </tbody></table></div></div></div>`;
     return;
   } else if(stabF==='cen'){
@@ -6295,7 +6561,7 @@ function doResetApp(){
 // Supabase: every save also quietly gets pushed here, but nothing is ever
 // read back FROM Firebase into the app anymore.
 // Authentication is handled entirely by the app's own user management.
-const FB_TABLE_MAP={mt_cand:'mt_cand',mt_hm:'mt_hm',mt_sch:'schools',mt_cen:'centers',mt_dio:'dioceses',mt_dist:'districts',mt_ec:'examcenters'};
+const FB_TABLE_MAP={mt_cand:'mt_cand',mt_hm:'mt_hm',mt_sch:'schools',mt_cen:'centers',mt_dio:'dioceses',mt_dist:'districts',mt_ec:'examcenters',mt_qec:'qipexamcentres'};
 /** Best-effort push to Firebase — fire and forget, mirrors the Supabase/MySQL
  *  backup pattern. Never reads back FROM Firebase into the app anymore. */
 function _fbPush(lsKey,id,obj){
@@ -6392,7 +6658,7 @@ function clearFB(){
 // one-way, best-effort mirror: every dbS() write also quietly gets pushed
 // to Supabase in the background. Nothing reads FROM Supabase back into the
 // app — it's purely an independent backup copy, not a second sync source.
-const SB_TABLE_MAP={mt_cand:'mt_cand',mt_hm:'mt_hm',mt_sch:'mt_sch',mt_cen:'mt_cen',mt_dio:'mt_dio',mt_dist:'mt_dist',mt_ec:'mt_ec',mt_users:'mt_users'};
+const SB_TABLE_MAP={mt_cand:'mt_cand',mt_hm:'mt_hm',mt_sch:'mt_sch',mt_cen:'mt_cen',mt_dio:'mt_dio',mt_dist:'mt_dist',mt_ec:'mt_ec',mt_qec:'mt_qec',mt_users:'mt_users'};
 function trySB(){
   const cfg=lsG('supabaseConfig');if(!cfg||!cfg.url||!cfg.key)return;
   try{
@@ -6474,6 +6740,7 @@ const MY_SYNC_MAP={
   mt_dio:{pageId:'page-schools-mgr',fn:renderSTabs},
   mt_dist:{pageId:'page-schools-mgr',fn:renderSTabs},
   mt_ec:{pageId:'page-schools-mgr',fn:renderSTabs},
+  mt_qec:{pageId:'page-schools-mgr',fn:renderSTabs},
   mt_users:{pageId:'page-admin-users',fn:renderUsers},
   mt_audit:{pageId:'page-audit',fn:function(){if(typeof renderAuditLog==='function')renderAuditLog();}},
 };
@@ -6702,6 +6969,13 @@ function selReport(t,el){
   if(ecRow)ecRow.style.display=(t==='candidates'||t==='birudh'||t==='slipid')?'flex':'none';
   const catRow=document.getElementById('rpt-cat-row');
   if(catRow)catRow.style.display=(t==='address')?'none':'flex';
+  const qecRow=document.getElementById('rpt-qec-row');
+  if(qecRow)qecRow.style.display=(t==='qip')?'flex':'none';
+  const clsSel=document.getElementById('rpt-cls');
+  if(clsSel){
+    if(t==='qip'){clsSel.value='CLSQIP';clsSel.disabled=true;}
+    else{clsSel.disabled=false;}
+  }
   const slipsBtn=document.getElementById('rpt-print-slips-btn');
   if(slipsBtn)slipsBtn.style.display=(t==='slipid')?'inline-flex':'none';
   const slipFmtWrap=document.getElementById('slip-fmt-wrap');
@@ -6710,6 +6984,8 @@ function selReport(t,el){
   if(idBtn)idBtn.style.display=(t==='slipid')?'inline-flex':'none';
   const fmtBtn=document.getElementById('rpt-print-fmt-btn');
   if(fmtBtn)fmtBtn.style.display=(t==='slipid')?'none':'inline-flex';
+  const lblBtn=document.getElementById('rpt-print-lbl-btn');
+  if(lblBtn)lblBtn.style.display=(t==='address')?'inline-flex':'none';
   const outWrap=document.getElementById('rpt-output-wrap');if(outWrap)outWrap.style.display='none';
   const st=document.getElementById('rpt-stats');if(st)st.style.display='none';
   const tw=document.getElementById('rpt-table-wrap');if(tw)tw.style.display='none';
@@ -6729,6 +7005,8 @@ function initReportFilters(){
   if(cl)cl.innerHTML='<option value="">All Classes</option>'+CLASSES.map(x=>'<option value="'+x.id+'">'+x.l+'</option>').join('');
   const ec=document.getElementById('rpt-ec');
   if(ec)ec.innerHTML='<option value="">All Exam Centers</option>'+getExamCenters().map(x=>'<option value="'+x.id+'">'+x.name+'</option>').join('');
+  const qec=document.getElementById('rpt-qec');
+  if(qec)qec.innerHTML='<option value="">All QIP Exam Centres</option>'+getQECs().sort((a,b)=>a.name.localeCompare(b.name)).map(x=>'<option value="'+x.id+'">'+x.name+'</option>').join('');
   const cat=document.getElementById('rpt-cat');
   if(cat&&!cat.options.length)cat.innerHTML='<option value="">All Categories</option>'+CATS.map(x=>'<option value="'+x.c+'">'+x.n+'</option>').join('');
   // Auto-apply guest scope filters and lock them
@@ -6783,6 +7061,7 @@ function generateReport(){
   const yr=+(document.getElementById('rpt-yr')?.value||STATE.examYear);
   const clsId=document.getElementById('rpt-cls')?.value||'';
   const catId=document.getElementById('rpt-cat')?.value||'';
+  const qecId=document.getElementById('rpt-qec')?.value||'';
   const outWrap=document.getElementById('rpt-output-wrap');if(outWrap)outWrap.style.display='block';
   if(_rptType==='address'){renderAddressReport(dId,cId,sId);return;}
   if(_rptType==='annual'){renderAnnualReport(dId,cId,sId,yr,catId);return;}
@@ -6793,6 +7072,10 @@ function generateReport(){
   if(clsId)data=data.filter(r=>r.clsId===clsId);
   if(catId)data=data.filter(r=>r.cat===catId);
   if(_rptType==='birudh')data=data.filter(r=>r.bir==='Yes'||r.birudhQualified==='Yes');
+  if(_rptType==='qip'){
+    data=data.filter(r=>r.clsId==='CLSQIP'||r.cat==='QIPT');
+    if(qecId)data=data.filter(r=>r.qecId===qecId);
+  }
   if(_rptType==='result')data=data.filter(r=>r.mark!==undefined&&r.mark!==null&&String(r.mark).trim()!=='');
   if(ecId){data=data.filter(r=>{var _es=getSchs().find(function(x){return x.id===r.schId});return _es&&_es.ecId===ecId});}
   data.sort((a,b)=>{
@@ -6808,7 +7091,7 @@ function generateReport(){
   const sch=getSchs().find(s=>s.id===sId);
   const ec=getExamCenters().find(e=>e.id===ecId);
   const hdrEl=document.getElementById('rpt-header');hdrEl.style.display='block';
-  document.getElementById('rpt-header-label').textContent=(_rptType==='birudh'?'Birudh Exam Candidates':_rptType==='result'?'Result — Marked Candidates':_rptType==='slipid'?'Slip & ID Card Printing':'All Candidates')+' | Exam Year '+yr;
+  document.getElementById('rpt-header-label').textContent=(_rptType==='birudh'?'Birudh Exam Candidates':_rptType==='result'?'Result — Marked Candidates':_rptType==='slipid'?'Slip & ID Card Printing':_rptType==='qip'?'QIP Candidates':'All Candidates')+' | Exam Year '+yr;
   const vals=[['Diocese',dio?.name||'All'],['Center',cen?.nm||'All']];
   if(ecId)vals.push(['Exam Center',ec?.name||'All']);else vals.push(['School',sch?.nm||'All']);
   document.getElementById('rpt-header-vals').innerHTML=vals.map(function(v){return'<span><strong>'+v[0]+':</strong> '+escHtml(v[1])+'</span>'}).join('');
@@ -6912,6 +7195,45 @@ function renderAddressReport(dId,cId,sId){
   document.getElementById('rpt-table-wrap').style.display='block';
 }
 function editCandById(id){editCand(id)}
+/** Prints Address records as A4 label sheets — 4 columns × 8 rows = 32
+ *  labels per page, matching standard A4 address-label stationery. Uses
+ *  the same Diocese/Center/School filters as the Address Records tab. */
+function printAddressLabels(){
+  const dId=document.getElementById('rpt-dio')?.value||'';
+  const cId=document.getElementById('rpt-cen')?.value||'';
+  const sId=document.getElementById('rpt-sch')?.value||'';
+  let data=lsL('mt_hm');
+  if(dId)data=data.filter(r=>r.dioId===dId);
+  if(cId)data=data.filter(r=>r.cenId===cId);
+  if(sId)data=data.filter(r=>r.schId===sId);
+  data.sort(function(a,b){return(a.schCode||'').localeCompare(b.schCode||'')});
+  if(!data.length){toast('No address records to print','warn');return}
+  const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const cells=data.map(function(r){
+    const lines=[];
+    lines.push('<div class="al-nm">'+esc(r.hmNm||'')+(r.desig?' <span class="al-dg">('+esc(r.desig)+')</span>':'')+'</div>');
+    if(r.schNm)lines.push('<div>'+esc(r.schNm)+(r.schCode?' ['+esc(r.schCode)+']':'')+'</div>');
+    if(r.a1)lines.push('<div>'+esc(r.a1)+'</div>');
+    if(r.a2)lines.push('<div>'+esc(r.a2)+'</div>');
+    const l3=[r.dist,r.state].filter(Boolean).join(', ')+(r.pin?' — '+r.pin:'');
+    if(l3.trim())lines.push('<div>'+esc(l3)+'</div>');
+    if(r.mob)lines.push('<div class="al-mb">Mob: '+esc(r.mob)+'</div>');
+    return '<div class="al-cell">'+lines.join('')+'</div>';
+  }).join('');
+  const w=window.open('','_blank');
+  w.document.write('<html><head><title>Address Labels</title><style>'
+    +'@page{size:A4 portrait;margin:8mm 6mm}'
+    +'*{margin:0;padding:0;box-sizing:border-box}'
+    +'body{font-family:Arial,Helvetica,sans-serif}'
+    +'.al-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:34.5mm;gap:0}'
+    +'.al-cell{border:0.3px dotted #bbb;padding:2.5mm 3mm;font-size:8.6px;line-height:1.35;overflow:hidden;page-break-inside:avoid}'
+    +'.al-nm{font-weight:700;font-size:9.4px;margin-bottom:1px}'
+    +'.al-dg{font-weight:400;font-size:8px}'
+    +'.al-mb{margin-top:1px;font-weight:600}'
+    +'</style></head><body><div class="al-grid">'+cells+'</div>'
+    +'<script>window.onload=function(){window.print()}<\/script></body></html>');
+  w.document.close();
+}
 function printReport(){
   const wrap=document.getElementById('rpt-table-wrap');
   if(!wrap||wrap.style.display==='none'){toast('Generate a report first','warn');return}
@@ -6933,6 +7255,11 @@ function printReport(){
   if(catId)data=data.filter(r=>r.cat===catId);
   if(ecId){const ecSet=new Set(getSchs().filter(s=>s.ecId===ecId).map(s=>s.id));data=data.filter(r=>ecSet.has(r.schId));}
   if(typeof _rptType!=='undefined'&&_rptType==='birudh')data=data.filter(r=>r.bir==='Yes'||r.birudhQualified==='Yes');
+  if(typeof _rptType!=='undefined'&&_rptType==='qip'){
+    data=data.filter(r=>r.clsId==='CLSQIP'||r.cat==='QIPT');
+    const qecId2=document.getElementById('rpt-qec')?.value||'';
+    if(qecId2)data=data.filter(r=>r.qecId===qecId2);
+  }
   const isResult=typeof _rptType!=='undefined'&&_rptType==='result';
   if(isResult)data=data.filter(r=>r.mark!==undefined&&r.mark!==null&&String(r.mark).trim()!=='');
   // Print title — changes with report type + Category selection
@@ -6940,6 +7267,7 @@ function printReport(){
   let listTitle='CANDIDATE LIST';
   if(typeof _rptType!=='undefined'&&_rptType==='birudh')listTitle='BIRUDH EXAM CANDIDATE LIST';
   else if(typeof _rptType!=='undefined'&&_rptType==='annual')listTitle='ANNUAL EXAM CANDIDATE LIST';
+  else if(typeof _rptType!=='undefined'&&_rptType==='qip')listTitle='QIP CANDIDATE LIST';
   else if(isResult)listTitle='EXAMINATION RESULT LIST';
   else if(catLbl)listTitle=catLbl.toUpperCase()+' CANDIDATE LIST';
   if(catLbl&&typeof _rptType!=='undefined'&&(_rptType==='birudh'||_rptType==='annual'||isResult))listTitle+=' \u2014 '+catLbl.toUpperCase();
@@ -7422,7 +7750,7 @@ function renderAuditLog(){
 function guestPopulateDioceses(){
   var sel=document.getElementById('g-dio');if(!sel)return;
   sel.innerHTML='<option value="">— Select Diocese —</option>';
-  DIOCESES.forEach(function(d){sel.appendChild(new Option(d.name,d.id))});
+  getDios().forEach(function(d){sel.appendChild(new Option(d.name,d.id))});
 }
 function guestLdCen(){
   var dId=document.getElementById('g-dio').value;
@@ -7457,7 +7785,7 @@ function doGuestLogin(){
   var cId=document.getElementById('g-cen').value;
   var sId=document.getElementById('g-sch').value;
   if(!dId){lerr('Please select at least a Diocese');return}
-  var dio=DIOCESES.find(function(d){return d.id===dId});
+  var dio=getDios().find(function(d){return d.id===dId});
   var cen=getCens().find(function(c){return c.id===cId});
   var sch=getSchs().find(function(s){return s.id===sId});
   var scopeLabel=(sch?sch.nm:(cen?cen.nm:(dio?dio.name:'—')))+
@@ -7504,7 +7832,7 @@ function openVerifyModal(){
   // Populate meta
   var sch=getSchs().find(function(x){return x.id===sId});
   var cen=getCens().find(function(x){return x.id===sch?.cId});
-  var dio=DIOCESES.find(function(x){return x.id===sch?.dId});
+  var dio=getDios().find(function(x){return x.id===sch?.dId});
   document.getElementById('vsub-meta').innerHTML=
     '<span><i class="fa-solid fa-church" style="opacity:.7"></i> '+(sch?sch.nm:'—')+'</span>'+
     '<span><i class="fa-solid fa-map-marker-alt" style="opacity:.7"></i> '+(cen?cen.nm:'—')+'</span>'+
@@ -7548,10 +7876,10 @@ function openVerifyModal(){
     document.getElementById('v-hm-nm').value=_hmRec.hmNm||'';
     document.getElementById('v-hm-des').value=_hmRec.desig==='CLERGY'?(_hmRec.clergyDes||'Clergy'):(_hmRec.desig||'Head Master');
     document.getElementById('v-hm-rem').value='';
-    // Store mobile for OTP
-    var _hmMob=_hmRec.mob||_hmRec.ph||'';
+    // Store email for OTP
+    var _hmEmail=_hmRec.email||'';
     var otpMobEl=document.getElementById('v-hm-mob');
-    if(otpMobEl)otpMobEl.value=_hmMob?'Mobile: '+_hmMob:'No mobile on record';
+    if(otpMobEl)otpMobEl.value=_hmEmail?_hmEmail:'No email on record';
     // Show auto-fill badge
     var afBadge=document.getElementById('hm-autofill-verify-badge');
     if(afBadge){afBadge.style.display='flex';}
@@ -7606,46 +7934,77 @@ function resetVerifySig(who){
 }
 var _vHmOtp='';
 var _vHmOtpVerified=false;
-function sendHmOtp(){
+function sendHmOtp(btnEl){
   var nm=document.getElementById('v-hm-nm').value.trim();
   if(!nm){toast('Enter HM / Superintendent name first','warn');return}
-  // Generate 6-digit OTP
-  _vHmOtp=String(Math.floor(100000+Math.random()*900000));
+  var email=(document.getElementById('v-hm-mob')?.value||'').trim();
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    toast('No valid email on record for this HM \u2014 add one in Address Records first','err');
+    return;
+  }
+  if(!STATE.mysqlBackup){toast('Database not connected \u2014 cannot send verification code','err');return}
   _vHmOtpVerified=false;
-  var mob=document.getElementById('v-hm-mob')?.value||'';
   var otpSection=document.getElementById('hm-otp-section');
   if(otpSection)otpSection.style.display='block';
   var otpInp=document.getElementById('hm-otp-inp');
   if(otpInp)otpInp.value='';
   var otpMsg=document.getElementById('hm-otp-msg');
-  if(otpMsg){
-    otpMsg.style.display='block';
-    otpMsg.style.background='var(--inf-l)';
-    otpMsg.style.color='var(--inf)';
-    otpMsg.style.border='1px solid var(--inf-b)';
-    // In production, OTP would be SMS'd — here we display it for demo
-    otpMsg.innerHTML='<i class="fa-solid fa-mobile-screen-button"></i> OTP sent to '+escHtml(mob)+'<br><span style="font-family:monospace;font-size:20px;font-weight:900;letter-spacing:4px;color:var(--pri)">'+_vHmOtp+'</span><br><small style="opacity:.7">(Demo mode — OTP shown here; in production it is sent by SMS)</small>';
-  }
-  toast('OTP generated for '+nm,'ok');
+  var btn=btnEl||null;
+  if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Sending…';}
+  fetch(STATE.mysqlBackup.url.replace(/api\.php$/,'otp.php')+'?action=send',{
+    method:'POST',headers:{'Content-Type':'application/json','X-API-Key':STATE.mysqlBackup.key},
+    body:JSON.stringify({email:email,context:'HM verification \u2014 '+nm})
+  }).then(function(r){return r.json()}).then(function(res){
+    if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-envelope"></i> Resend OTP';}
+    if(res&&res.ok){
+      _vHmOtp=email; // marks that a code is pending for this email
+      if(otpMsg){
+        otpMsg.style.display='block';
+        otpMsg.style.background='var(--inf-l)';
+        otpMsg.style.color='var(--inf)';
+        otpMsg.style.border='1px solid var(--inf-b)';
+        otpMsg.innerHTML='<i class="fa-solid fa-envelope-circle-check"></i> A 6-digit code has been emailed to '+escHtml(email)+'.';
+      }
+      toast('Verification code sent to '+nm,'ok');
+    }else{
+      if(otpMsg){
+        otpMsg.style.display='block';
+        otpMsg.style.background='var(--err-l)';otpMsg.style.color='var(--err)';otpMsg.style.border='1px solid var(--err-b)';
+        otpMsg.innerHTML='<i class="fa-solid fa-circle-xmark"></i> '+escHtml(res&&res.error?res.error:'Could not send the code');
+      }
+      toast(res&&res.error?res.error:'Could not send the code','err');
+    }
+  }).catch(function(e){
+    if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-envelope"></i> Resend OTP';}
+    toast('Could not reach the server: '+e.message,'err');
+  });
 }
 function verifyHmOtp(){
   var nm=document.getElementById('v-hm-nm').value.trim();
+  var email=(document.getElementById('v-hm-mob')?.value||'').trim();
   var entered=(document.getElementById('hm-otp-inp')?.value||'').trim();
   if(!_vHmOtp){toast('Send OTP first','warn');return}
-  if(!entered){toast('Enter the OTP','warn');return}
-  if(entered===_vHmOtp){
-    _vHmOtpVerified=true;
-    hmSign();
-  } else {
-    var otpMsg=document.getElementById('hm-otp-msg');
-    if(otpMsg){
-      otpMsg.style.background='var(--err-l)';
-      otpMsg.style.color='var(--err)';
-      otpMsg.style.border='1px solid var(--err-b)';
-      otpMsg.innerHTML='<i class="fa-solid fa-circle-xmark"></i> <strong>Incorrect OTP.</strong> Please try again or resend.';
+  if(!/^\d{6}$/.test(entered)){toast('Enter the 6-digit code','warn');return}
+  if(!STATE.mysqlBackup){toast('Database not connected','err');return}
+  fetch(STATE.mysqlBackup.url.replace(/api\.php$/,'otp.php')+'?action=verify',{
+    method:'POST',headers:{'Content-Type':'application/json','X-API-Key':STATE.mysqlBackup.key},
+    body:JSON.stringify({email:email,code:entered})
+  }).then(function(r){return r.json()}).then(function(res){
+    if(res&&res.verified){
+      _vHmOtpVerified=true;
+      hmSign();
+    }else{
+      var otpMsg=document.getElementById('hm-otp-msg');
+      if(otpMsg){
+        otpMsg.style.display='block';
+        otpMsg.style.background='var(--err-l)';
+        otpMsg.style.color='var(--err)';
+        otpMsg.style.border='1px solid var(--err-b)';
+        otpMsg.innerHTML='<i class="fa-solid fa-circle-xmark"></i> <strong>'+escHtml(res&&res.error?res.error:'Incorrect code')+'.</strong> Please try again or resend.';
+      }
+      toast(res&&res.error?res.error:'Incorrect code','err');
     }
-    toast('Incorrect OTP','err');
-  }
+  }).catch(function(e){toast('Could not reach the server: '+e.message,'err');});
 }
 function hmSign(){
   var nm=document.getElementById('v-hm-nm').value.trim();
@@ -8252,15 +8611,15 @@ function setHMListTab(tab,el){
       <div class="fg2" style="margin-top:12px">
         <div class="fg"><label>HM / Superintendent Name <span class="req">*</span></label><input class="fc" id="v-hm-nm" placeholder="Full name"></div>
         <div class="fg"><label>Designation</label><input class="fc" id="v-hm-des" placeholder="Head Master / Superintendent"></div>
-        <div class="fg"><label>Mobile (from Address Record)</label><input class="fc" id="v-hm-mob" readonly style="background:var(--inf-l);color:var(--inf);font-size:12px;font-weight:600" placeholder="Auto-filled from Address Records"></div>
+        <div class="fg"><label>Email (from Address Record)</label><input class="fc" id="v-hm-mob" readonly style="background:var(--inf-l);color:var(--inf);font-size:12px;font-weight:600" placeholder="Auto-filled from Address Records"></div>
         <div class="fg"><label>Remarks</label><input class="fc" id="v-hm-rem" placeholder="Any remarks on the candidate list…"></div>
       </div>
       <!-- OTP Section -->
       <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <button class="btn binf bsm" onclick="sendHmOtp()" style="flex-shrink:0">
-          <i class="fa-solid fa-mobile-screen-button"></i> Send OTP to HM
+        <button class="btn binf bsm" onclick="sendHmOtp(this)" style="flex-shrink:0">
+          <i class="fa-solid fa-envelope"></i> Send OTP to HM
         </button>
-        <span style="font-size:11px;color:var(--mut)">OTP will be sent to HM's registered mobile</span>
+        <span style="font-size:11px;color:var(--mut)">A code will be emailed to the HM's registered email</span>
       </div>
       <!-- OTP Input & Status -->
       <div id="hm-otp-section" style="display:none;margin-top:10px">
