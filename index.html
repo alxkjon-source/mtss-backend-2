@@ -3762,6 +3762,9 @@ async function _upgradeHashIfNeeded(u,pw){
   const all=getUsers();
   const idx=all.findIndex(x=>x.id===u.id);
   if(idx>=0){all[idx]=u;lsS('mt_users',all);}
+  _myPush('mt_users',u.id,u); // also push the upgraded hash to MySQL, or bootstrap login
+                               // (which only understands the strong format) would never
+                               // work for this account from any other device
 }
 
 // ==================== LOGIN ATTEMPT THROTTLING ====================
@@ -3938,6 +3941,7 @@ async function doLogin(){
   // ◀◀ Step 1: check the app's local user list (hashed password) ◀◀
   const localCand=getUsers().find(x=>x.email.toLowerCase()===em&&x.active!==false);
   if(localCand&&await verifyPW(pw,localCand.ph)){
+    _bootstrapConnect(em,pw); // fire-and-forget: silently connects to the primary DB, no manual Settings entry needed
     await _upgradeHashIfNeeded(localCand,pw);
     _loginThrottleClear(em);
     loginOK(localCand);return;
@@ -3963,9 +3967,19 @@ async function doLogin(){
       })
       .catch(()=>{_loginThrottleRecordFail(em);lerr('Invalid email or password');rstBtn()});
   } else {
-    // No Firebase → purely local
-    _loginThrottleRecordFail(em);
-    setTimeout(()=>{lerr('Invalid email or password');rstBtn()},300);
+    // No Firebase → try the server-verified bootstrap login directly. This is
+    // what makes a totally fresh device (nothing cached locally yet) work:
+    // the server checks the email/password against mt_users itself and, on
+    // a match, hands back both the connection config and that user's record.
+    const bsUser=await _bootstrapConnect(em,pw,true);
+    if(bsUser){
+      const users=getUsers();if(!users.find(x=>x.id===bsUser.id))users.push(bsUser);lsS('mt_users',users);
+      _loginThrottleClear(em);
+      loginOK(bsUser);
+    } else {
+      _loginThrottleRecordFail(em);
+      setTimeout(()=>{lerr('Invalid email or password');rstBtn()},300);
+    }
   }
 }
 function lerr(m){
@@ -4006,6 +4020,7 @@ async function doLoginUser(){
   ubtn.innerHTML='<span style="width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:spin .7s linear infinite"></span>';
   const localCand=getUsers().find(x=>x.email.toLowerCase()===em&&x.active!==false);
   if(localCand&&await verifyPW(pw,localCand.ph)){
+    _bootstrapConnect(em,pw); // fire-and-forget: silently connects to the primary DB, no manual Settings entry needed
     await _upgradeHashIfNeeded(localCand,pw);
     _loginThrottleClear(em);
     loginOK(localCand);return;
@@ -4024,8 +4039,15 @@ async function doLoginUser(){
         } else {_loginThrottleRecordFail(em);const e=document.getElementById('lerr-user');e.textContent='Invalid email or password';e.style.display='block';rstBtn()}
       }).catch(()=>{_loginThrottleRecordFail(em);const e=document.getElementById('lerr-user');e.textContent='Invalid email or password';e.style.display='block';rstBtn()});
   } else {
-    _loginThrottleRecordFail(em);
-    setTimeout(()=>{const e=document.getElementById('lerr-user');e.textContent='Invalid email or password';e.style.display='block';rstBtn()},300);
+    const bsUser=await _bootstrapConnect(em,pw,true);
+    if(bsUser){
+      const users=getUsers();if(!users.find(x=>x.id===bsUser.id))users.push(bsUser);lsS('mt_users',users);
+      _loginThrottleClear(em);
+      loginOK(bsUser);
+    } else {
+      _loginThrottleRecordFail(em);
+      const e=document.getElementById('lerr-user');e.textContent='Invalid email or password';e.style.display='block';rstBtn();
+    }
   }
 }
 function loginOK(u){
@@ -7220,13 +7242,51 @@ const MY_SYNC_MAP={
 //      the server for every request — not just in this JS.
 //
 // Client-side fix applied here: the key is no longer baked into the shipped
-// file. Each admin device must now enter the URL + key once in Settings
-// (Database Connection), where it is kept only in that device's own
-// localStorage, never distributed inside the HTML again.
+// file. Instead, the app fetches it automatically right after a successful
+// login (see _bootstrapConnect below) — your server verifies the person's
+// email + password itself and only then hands back the connection details.
+// Nobody has to type a URL/key by hand, but nobody who *isn't* a valid user
+// gets to see the key either. Settings → Database Connection still exists
+// as a manual override/fallback if bootstrap ever can't reach your server.
 const DEFAULT_MYSQL_CONFIG={
   url:'',
   key:''
 };
+
+// This is just the address of your API — not a secret, so it's fine to keep
+// it in the file. Only the API key (fetched below, after login) was ever
+// sensitive. Change this if your API URL ever changes.
+const MTSS_API_BASE='https://marthomasundayschoolsamajam.com/mtss-api/api.php';
+
+/** Called right after a login attempt with the plaintext email/password the
+ *  person just typed. Sends them to a new `?action=bootstrap` route on your
+ *  server (PHP snippet provided separately) which re-checks that email +
+ *  password against the mt_users table itself — never trusting the browser
+ *  — and only on a genuine match sends back {url,key,user}. On success we
+ *  store the connection config exactly like the manual Settings form would,
+ *  then connect. On any failure this fails quietly and the app keeps working
+ *  from local/offline data.
+ *  @param {boolean} returnUser - if true, resolves to the matched user
+ *    record (for logging a brand-new device in with no local cache yet);
+ *    if false, resolves to true/false and is meant to be fire-and-forget. */
+async function _bootstrapConnect(email,password,returnUser){
+  try{
+    const res=await fetch(MTSS_API_BASE+'?action=bootstrap',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,password})
+    });
+    const data=await res.json().catch(()=>null);
+    if(!res.ok||!data||!data.ok||!data.url||!data.key)return returnUser?null:false;
+    lsS('mysqlBackupConfig',{url:data.url,key:data.key});
+    tryMY(true);
+    return returnUser?(data.user||null):true;
+  }catch(e){
+    console.warn('Bootstrap connect failed (working offline/local only):',e);
+    return returnUser?null:false;
+  }
+}
+
 let _myPollTimer=null;
 function tryMY(silent){
   const cfg=lsG('mysqlBackupConfig');
